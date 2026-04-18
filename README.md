@@ -1,14 +1,37 @@
 # Manual Loop Closure Tools
 
+<p align="center">
+  <img src="assets/hero.svg" alt="Manual Loop Closure Tools hero" width="100%" />
+</p>
+
+<p align="center">
+  <a href="https://github.com/JokerJohn/Mannual-Loop-Closure-Tools/actions/workflows/ci.yml">
+    <img src="https://github.com/JokerJohn/Mannual-Loop-Closure-Tools/actions/workflows/ci.yml/badge.svg" alt="CI" />
+  </a>
+  <img src="https://img.shields.io/badge/python-3.10-blue.svg" alt="Python 3.10" />
+  <img src="https://img.shields.io/badge/ROS-Noetic-22314E.svg" alt="ROS Noetic" />
+  <img src="https://img.shields.io/badge/license-MIT-green.svg" alt="MIT License" />
+</p>
+
 Offline manual loop closure editing and optimization tools for LiDAR mapping pose graphs.
 
 用于激光雷达建图位姿图的离线手动闭环编辑与优化工具。
 
 ## Overview | 项目简介
 
-This project separates manual loop closure inspection, point-cloud-assisted edge editing, and offline pose-graph optimization into a standalone open-source workflow.
+This repository packages the manual loop-closure workflow into a standalone open-source project with:
 
-本项目将手动闭环检查、点云辅助边编辑和离线位姿图优化整理为一个独立的开源工作流。
+本仓库将手动闭环工作流整理为一个独立的开源项目，包含：
+
+- a PyQt GUI for trajectory inspection and point-cloud-assisted loop editing
+- an offline optimizer backend for exporting new pose graphs and maps
+- bilingual documentation for installation, usage, and validation
+- helper scripts for virtual environments, backend build, environment checks, and screenshot generation
+
+- 用于轨迹检查和点云辅助闭环编辑的 PyQt 图形界面
+- 用于导出新位姿图和地图的离线优化后端
+- 中英文双语安装、使用和验证文档
+- 用于虚拟环境、后端构建、环境检查和截图生成的辅助脚本
 
 It is designed for mapping results that already contain:
 
@@ -17,6 +40,19 @@ It is designed for mapping results that already contain:
 - `pose_graph.g2o`
 - `optimized_poses_tum.txt`
 - `key_point_frame/*.pcd`
+
+## Screenshots | 界面截图
+
+<p align="center">
+  <img src="assets/screenshots/session-loaded.png" alt="Session loaded screenshot" width="48%" />
+  <img src="assets/screenshots/edge-selected.png" alt="Edge selected screenshot" width="48%" />
+</p>
+
+## Workflow | 工作流
+
+<p align="center">
+  <img src="assets/workflow.svg" alt="Workflow diagram" width="100%" />
+</p>
 
 The GUI lets you inspect trajectories, select node pairs or existing loop edges, preview target/source point clouds, run GICP, add or replace loop constraints, manage a working graph session, and export a new optimized map.
 
@@ -29,32 +65,20 @@ The GUI lets you inspect trajectories, select node pairs or existing loop edges,
 | Embedded PyQt + Open3D viewer | 内嵌式 PyQt + Open3D 点云查看器 |
 | `Working` / `Original` trajectory comparison | `Working` / `Original` 双轨迹对比 |
 | Manual edge add, replace, disable, restore | 手工新增、替换、禁用、恢复闭环边 |
-| Manual source alignment in point-cloud view | 在点云视图中直接调整 source 初值 |
+| Interactive source alignment in point-cloud view | 在点云视图中直接调整 source 初值 |
 | Auto yaw sweep for ground robots | 面向地面机器人的自动 yaw 遍历 |
 | Offline optimizer exporting new `g2o`, `TUM`, map, and trajectory PCD | 离线优化器可导出新的 `g2o`、`TUM`、地图和轨迹点云 |
 | Session-based graph editing with undo and change tracking | 带撤销和改动跟踪的工作会话式图编辑 |
 
 ## Quick Start | 快速开始
 
-### 1. Create the GUI environment | 创建 GUI 环境
+### Recommended path: `requirements.txt` + `.venv` | 推荐方式：`requirements.txt` + `.venv`
 
 ```bash
 cd ~/my_git/Mannual-Loop-Closure-Tools
-conda env create -f environment.yml
-conda activate manual-loop-closure
-```
-
-### 2. Build the backend optimizer | 编译后端优化器
-
-```bash
-cd ~/my_git/Mannual-Loop-Closure-Tools
-bash scripts/build_backend_catkin.sh
-```
-
-### 3. Launch the GUI | 启动 GUI
-
-```bash
-cd ~/my_git/Mannual-Loop-Closure-Tools
+make venv
+source .venv/bin/activate
+make backend
 python launch_gui.py --session-root /path/to/mapping_session
 ```
 
@@ -64,6 +88,16 @@ You can also point directly to a `g2o` file:
 
 ```bash
 python launch_gui.py --g2o /path/to/pose_graph.g2o
+```
+
+### Alternative path: conda | 备选方式：conda
+
+```bash
+cd ~/my_git/Mannual-Loop-Closure-Tools
+conda env create -f environment.yml
+conda activate manual-loop-closure
+make backend
+python launch_gui.py --session-root /path/to/mapping_session
 ```
 
 ## Tested Environment | 当前测试环境
@@ -111,26 +145,22 @@ After optimization, the tool exports a new run directory under the input session
 ```text
 Mannual-Loop-Closure-Tools/
 ├── README.md
+├── CHANGELOG.md
 ├── CONTRIBUTING.md
 ├── LICENSE
-├── environment.yml
+├── Makefile
 ├── requirements.txt
+├── environment.yml
 ├── launch_gui.py
+├── assets/
 ├── docs/
-│   ├── INSTALL.md
-│   └── TOOL_README.md
 ├── gui/
-│   ├── manual_loop_closure_tool.py
-│   └── manual_loop_closure/
 ├── backend/
 │   └── catkin_ws/
 │       └── src/
 │           ├── CMakeLists.txt
 │           └── manual_loop_closure_backend/
 └── scripts/
-    ├── build_backend_catkin.sh
-    ├── check_env.py
-    └── install_ubuntu20.sh
 ```
 
 ## Documentation | 文档
@@ -138,6 +168,17 @@ Mannual-Loop-Closure-Tools/
 - [Installation Guide / 安装说明](docs/INSTALL.md)
 - [Tool Manual / 工具说明](docs/TOOL_README.md)
 - [Contributing / 贡献说明](CONTRIBUTING.md)
+- [Changelog / 版本记录](CHANGELOG.md)
+
+## Developer Utilities | 开发辅助
+
+```bash
+make help
+make check
+make env-check
+make backend
+make assets SESSION_ROOT=/path/to/session
+```
 
 ## Open-Source Notes | 开源说明
 
@@ -145,12 +186,48 @@ This repository focuses on the standalone manual-loop-closure workflow only. It 
 
 本仓库聚焦于独立的手动闭环工具链，不包含完整的在线建图系统。
 
-If you publish results based on this tool, please cite your own mapping project or paper accordingly.
+This project is derived from and complements the broader **MS-Mapping** research and codebase:
 
-如果你基于本工具发布结果，请按你的建图项目或论文要求进行引用。
+本项目源自并服务于更完整的 **MS-Mapping** 研究与代码体系：
+
+- Project URL / 项目地址: https://github.com/JokerJohn/MS-Mapping
+
+If you use this repository in academic work, please also cite the MS-Mapping paper:
+
+如果你在学术工作中使用了本仓库，也请同时引用 MS-Mapping 论文：
+
+```bibtex
+@misc{hu2024msmapping,
+      title={MS-Mapping: An Uncertainty-Aware Large-Scale Multi-Session LiDAR Mapping System},
+      author={Xiangcheng Hu, Jin Wu, Jianhao Jiao, Binqian Jiang, Wei Zhang, Wenshuo Wang and Ping Tan},
+      year={2024},
+      eprint={2408.03723},
+      archivePrefix={arXiv},
+      primaryClass={cs.RO},
+      url={https://arxiv.org/abs/2408.03723},
+}
+```
 
 ## License | 许可
 
-This repository is released under the MIT License.
+This standalone repository is released under the MIT License.
 
-本仓库采用 MIT License。
+本独立仓库采用 MIT License。
+
+For the related full multi-session mapping system, please also refer to the original **MS-Mapping** repository and its paper:
+
+对于相关的完整多会话建图系统，也请参考原始 **MS-Mapping** 仓库及其论文：
+
+- Project URL / 项目地址: https://github.com/JokerJohn/MS-Mapping
+
+```bibtex
+@misc{hu2024msmapping,
+      title={MS-Mapping: An Uncertainty-Aware Large-Scale Multi-Session LiDAR Mapping System},
+      author={Xiangcheng Hu, Jin Wu, Jianhao Jiao, Binqian Jiang, Wei Zhang, Wenshuo Wang and Ping Tan},
+      year={2024},
+      eprint={2408.03723},
+      archivePrefix={arXiv},
+      primaryClass={cs.RO},
+      url={https://arxiv.org/abs/2408.03723},
+}
+```

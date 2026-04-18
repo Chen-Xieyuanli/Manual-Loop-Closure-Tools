@@ -54,24 +54,37 @@ What the script installs:
 
 ## 3. Create the Python Environment | 3. 创建 Python 环境
 
-Recommended:
+Recommended default path:
 
-推荐方式：
+默认推荐方式：
 
 ```bash
-conda env create -f environment.yml
-conda activate manual-loop-closure
+make venv
+source .venv/bin/activate
 ```
 
-Alternative with `pip`:
+This uses the version-pinned [requirements.txt](../requirements.txt) and creates a local virtual environment under `.venv/`.
 
-也可使用 `pip`：
+这条路径会使用带版本号约束的 [requirements.txt](../requirements.txt)，并在仓库根目录创建 `.venv/` 本地虚拟环境。
+
+Manual equivalent:
+
+手动等价命令：
 
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -U pip
 pip install -r requirements.txt
+```
+
+Alternative with conda:
+
+也可使用 conda：
+
+```bash
+conda env create -f environment.yml
+conda activate manual-loop-closure
 ```
 
 ## 4. Install GTSAM | 4. 安装 GTSAM
@@ -96,7 +109,7 @@ Otherwise, install GTSAM 4.2+ and make sure CMake can find it through one of:
 
 ```bash
 cd ~/my_git/Mannual-Loop-Closure-Tools
-bash scripts/build_backend_catkin.sh
+make backend
 ```
 
 This builds:
@@ -117,7 +130,7 @@ backend/catkin_ws/devel/lib/manual_loop_closure_backend/manual_loop_optimize
 ## 6. Verify the Environment | 6. 检查环境
 
 ```bash
-python scripts/check_env.py
+make env-check
 ```
 
 This script prints Python package versions, ROS / catkin presence, common GTSAM CMake paths, and backend build hints.
@@ -128,7 +141,7 @@ This script prints Python package versions, ROS / catkin presence, common GTSAM 
 
 ```bash
 cd ~/my_git/Mannual-Loop-Closure-Tools
-conda activate manual-loop-closure
+source .venv/bin/activate
 python launch_gui.py --session-root /path/to/mapping_session
 ```
 
