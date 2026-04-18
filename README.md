@@ -111,30 +111,27 @@ make backend
 python launch_gui.py --session-root /path/to/mapping_session
 ```
 
+## Test Data | 测试数据
+
+You can download a sample mapping session for quick validation here:
+
+你可以通过下面的链接下载示例建图结果，快速验证工具流程：
+
+- Google Drive: https://drive.google.com/file/d/1iu3wO5YsiIl9ZuWlSlXz2fmu6ujTBw5J/view?usp=drive_link
+
 ## Tested Environment | 当前测试环境
 
 The current repository content was tested with the following dependency versions on Ubuntu 20.04 / ROS Noetic.
 
 当前仓库内容在 Ubuntu 20.04 / ROS Noetic 环境下使用如下依赖版本进行了测试。
 
-| Component | Version |
-|---|---|
-| Ubuntu | 20.04 |
-| ROS | Noetic |
-| Python | 3.10.16 |
-| catkin_tools | 0.9.4 |
-| Open3D | 0.19.0 |
-| PyQt5 | 5.15.10 |
-| Qt | 5.15.2 |
-| NumPy | 1.24.4 |
-| SciPy | 1.14.1 |
-| Matplotlib | 3.10.8 |
-| CMake | 3.25.0 |
-| GCC / G++ | 9.4.0 |
-| OpenCV | 4.2.0 |
-| PCL | 1.10.0 |
-| GeographicLib | 1.50.1 |
-| GTSAM | 4.3.0 |
+| Ubuntu | ROS | Python | catkin_tools | CMake | GCC / G++ |
+|---|---|---|---|---|---|
+| 20.04 | Noetic | 3.10.16 | 0.9.4 | 3.25.0 | 9.4.0 |
+
+| Open3D | PyQt5 | Qt | NumPy | SciPy | Matplotlib | OpenCV | PCL | GeographicLib | GTSAM |
+|---|---|---|---|---|---|---|---|---|---|
+| 0.19.0 | 5.15.10 | 5.15.2 | 1.24.4 | 1.14.1 | 3.10.8 | 4.2.0 | 1.10.0 | 1.50.1 | 4.3.0 |
 
 ## Output Artifacts | 导出结果
 
