@@ -6,6 +6,9 @@ This wiki is designed as a practical operator guide for the standalone manual lo
 
 本 Wiki 面向实际使用者，重点介绍独立手动闭环工具的操作流程、图编辑逻辑、优化后端行为和常见问题。
 
+**Authors**: Xiangcheng HU, Jin Wu and Xieyaunli Chen  
+**Contact**: [xhbd@connect.ust.hk](mailto:xhbd@connect.ust.hk)
+
 <p align="center">
   <img src="https://raw.githubusercontent.com/JokerJohn/Mannual-Loop-Closure-Tools/main/assets/screenshots/edge-selected.png" alt="Manual Loop Closure Tools screenshot" width="82%" />
 </p>

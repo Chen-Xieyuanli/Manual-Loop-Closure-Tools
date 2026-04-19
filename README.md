@@ -13,6 +13,11 @@
   <img src="https://img.shields.io/badge/license-GPLv3-blue.svg" alt="GNU GPL v3.0 License" />
 </p>
 
+<p align="center">
+  <strong>Authors</strong>: Xiangcheng HU, Jin Wu and Xieyaunli Chen<br/>
+  <strong>Contact</strong>: <a href="mailto:xhbd@connect.ust.hk">xhbd@connect.ust.hk</a>
+</p>
+
 Offline manual loop closure editing and optimization tools for LiDAR mapping pose graphs.
 
 用于激光雷达建图位姿图的离线手动闭环编辑与优化工具。

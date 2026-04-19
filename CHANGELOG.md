@@ -42,6 +42,7 @@ All notable changes to this project will be documented in this file.
 - Added a repository-hosted wiki content set under `wiki/` with a GitHub-Wiki-ready page structure.
 - Enlarged the main README screenshot and switched feature demos from a three-column layout to full-width single-column sections for clearer viewing.
 - Updated the wiki content so it can be published directly to GitHub Wiki with sidebar navigation and GitHub-safe asset links.
+- Added a prominent author/contact block to the README header.
 
 ### Validated
 
