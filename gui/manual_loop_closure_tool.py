@@ -744,19 +744,21 @@ class ManualLoopClosureWindow(QtWidgets.QMainWindow):
                 border-color: #3b82f6;
             }
             QToolBar {
-                background: #f8fafc;
+                background: #ffffff;
                 border: 1px solid #d9e1ea;
-                border-radius: 10px;
-                spacing: 4px;
+                border-radius: 12px;
+                spacing: 3px;
                 padding: 4px;
             }
             QToolBar QToolButton {
-                background: transparent;
-                border: 1px solid transparent;
-                border-radius: 8px;
+                background: #f8fafc;
+                border: 1px solid #e2e8f0;
+                color: #334155;
+                qproperty-iconSize: 17px;
+                border-radius: 9px;
                 padding: 5px;
-                min-width: 28px;
-                min-height: 28px;
+                min-width: 30px;
+                min-height: 30px;
             }
             QToolBar QToolButton:hover {
                 background: #eef4ff;
@@ -765,6 +767,15 @@ class ManualLoopClosureWindow(QtWidgets.QMainWindow):
             QToolBar QToolButton:pressed, QToolBar QToolButton:checked {
                 background: #dbeafe;
                 border-color: #60a5fa;
+            }
+            QToolBar::separator {
+                width: 8px;
+                background: transparent;
+            }
+            QToolBar QToolButton[toolbarRole="quiet"] {
+                background: transparent;
+                border: 1px solid transparent;
+                color: #64748b;
             }
             QFrame#SegmentedControl {
                 background: #eef2f7;
@@ -864,7 +875,7 @@ class ManualLoopClosureWindow(QtWidgets.QMainWindow):
         if not hasattr(self, "toolbar") or self.toolbar is None:
             return
 
-        self.toolbar.setIconSize(QtCore.QSize(18, 18))
+        self.toolbar.setIconSize(QtCore.QSize(17, 17))
         self.toolbar.setToolButtonStyle(QtCore.Qt.ToolButtonIconOnly)
         self.toolbar.setMovable(False)
         self.toolbar.setFloatable(False)
@@ -878,6 +889,11 @@ class ManualLoopClosureWindow(QtWidgets.QMainWindow):
 
         for button in self.toolbar.findChildren(QtWidgets.QToolButton):
             button.setAutoRaise(False)
+            text = button.defaultAction().text().strip() if button.defaultAction() is not None else ""
+            if text in {"Clear selection", "Fit trajectory view"}:
+                button.setProperty("toolbarRole", "quiet")
+                button.style().unpolish(button)
+                button.style().polish(button)
 
     def _on_plot_toolbar_action_triggered(self, *_args) -> None:
         QtCore.QTimer.singleShot(0, self._update_plot_help_state)
@@ -1044,6 +1060,18 @@ class ManualLoopClosureWindow(QtWidgets.QMainWindow):
         self.toolbar = NavigationToolbar(self.trajectory_canvas, group)
         self.trajectory_canvas.set_toolbar(self.toolbar)
         self.trajectory_canvas.set_callbacks(self._handle_plot_selection, self._handle_plot_hover)
+        style = self.style()
+        self.toolbar.addSeparator()
+        clear_icon = style.standardIcon(QtWidgets.QStyle.SP_DialogResetButton)
+        fit_icon = style.standardIcon(QtWidgets.QStyle.SP_TitleBarMaxButton)
+        self.clear_selection_action = self.toolbar.addAction(clear_icon, "Clear selection", self._clear_selection)
+        self.clear_selection_action.setToolTip("Clear the current node or edge selection.")
+        self.fit_view_action = self.toolbar.addAction(
+            fit_icon,
+            "Fit trajectory view",
+            lambda: self._refresh_plot(preserve_view=False),
+        )
+        self.fit_view_action.setToolTip("Reset the trajectory view to the full pose graph.")
         layout.addWidget(self.toolbar)
 
         header_row = QtWidgets.QHBoxLayout()
@@ -1096,16 +1124,6 @@ class ManualLoopClosureWindow(QtWidgets.QMainWindow):
         mode_group.addButton(self.pick_nodes_button)
         mode_group.addButton(self.pick_edges_button)
 
-        clear_button = QtWidgets.QToolButton()
-        clear_button.setText("Clear Selection")
-        clear_button.setToolTip("Clear the current node or edge selection.")
-        clear_button.clicked.connect(self._clear_selection)
-
-        fit_view_button = QtWidgets.QToolButton()
-        fit_view_button.setText("Fit View")
-        fit_view_button.setToolTip("Reset the trajectory view to the full pose graph.")
-        fit_view_button.clicked.connect(lambda: self._refresh_plot(preserve_view=False))
-
         segmented_control = QtWidgets.QFrame()
         segmented_control.setObjectName("SegmentedControl")
         segmented_layout = QtWidgets.QHBoxLayout(segmented_control)
@@ -1115,8 +1133,6 @@ class ManualLoopClosureWindow(QtWidgets.QMainWindow):
         segmented_layout.addWidget(self.pick_edges_button)
 
         actions_row.addWidget(segmented_control)
-        actions_row.addWidget(clear_button)
-        actions_row.addWidget(fit_view_button)
         actions_row.addStretch(1)
         layout.addLayout(actions_row)
 
