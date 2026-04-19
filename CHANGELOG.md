@@ -38,6 +38,8 @@ All notable changes to this project will be documented in this file.
 - Reworked the right-side control area into persistent `Summary` / `Advanced` tabs with per-tab scrolling so the tab header remains visible while browsing long panels.
 - Compressed the `Summary`, `Delta`, and `Registration` layouts, moved `MapVoxel` into `Advanced`, and simplified action labels for a denser but clearer control column.
 - Improved the point-cloud viewer defaults with a top-down camera preset, active preset highlighting, and synchronized local/repo UI behavior.
+- Added animated README demos for adding, replacing, and disabling loop edges.
+- Added a repository-hosted wiki content set under `wiki/` with a GitHub-Wiki-ready page structure.
 
 ### Validated
 

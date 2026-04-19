@@ -69,6 +69,33 @@ The GUI lets you inspect trajectories, select node pairs or existing loop edges,
 
 图形界面支持轨迹检查、节点对和已有闭环边选择、source/target 点云预览、GICP 配准、手工新增或替换闭环约束、工作态位姿图管理，以及新优化地图导出。
 
+## Feature Demos | 功能动图
+
+<table>
+  <tr>
+    <td width="33%" align="center"><strong>Add Loop</strong><br/>新增闭环边</td>
+    <td width="33%" align="center"><strong>Replace Loop</strong><br/>替换已有闭环边</td>
+    <td width="33%" align="center"><strong>Disable Loop</strong><br/>禁用已有闭环边</td>
+  </tr>
+  <tr>
+    <td align="center"><img src="assets/add_loopsx3.gif" alt="Add loop demo" width="100%" /></td>
+    <td align="center"><img src="assets/replace_loopx3.gif" alt="Replace loop demo" width="100%" /></td>
+    <td align="center"><img src="assets/disable_loop.gif" alt="Disable loop demo" width="100%" /></td>
+  </tr>
+</table>
+
+The three animations above highlight the most common graph-editing actions in the working session:
+
+上面的三段动图展示了工作会话中最常用的图编辑动作：
+
+- add a new manual loop after validating a GICP result
+- replace an existing loop edge with a better manual registration result
+- temporarily disable an existing loop edge before re-optimization
+
+- 在确认 GICP 结果后新增一条手工闭环边
+- 用更可靠的手工配准结果替换已有闭环边
+- 在重新优化前临时禁用已有闭环边
+
 ## Key Features | 主要功能
 
 | Feature | 功能 |
@@ -221,8 +248,28 @@ Mannual-Loop-Closure-Tools/
 - [Installation Guide / 安装说明](docs/INSTALL.md)
 - [Python GTSAM 4.3 / Python GTSAM 4.3 安装](docs/INSTALL_GTSAM_PYTHON.md)
 - [Tool Manual / 工具说明](docs/TOOL_README.md)
+- [Wiki Home / Wiki 首页](wiki/Home.md)
+- [Wiki Sidebar / Wiki 目录](wiki/_Sidebar.md)
 - [Contributing / 贡献说明](CONTRIBUTING.md)
 - [Changelog / 版本记录](CHANGELOG.md)
+
+## Wiki | 项目 Wiki
+
+The repository now ships with a structured wiki content set under [`wiki/`](wiki/), designed to mirror a future GitHub Wiki layout:
+
+仓库现在内置了一套结构化 Wiki 内容，位于 [`wiki/`](wiki/) 目录下，目录组织方式已经按未来 GitHub Wiki 的形态设计：
+
+- [Home](wiki/Home.md)
+- [Quick Start](wiki/Quick-Start.md)
+- [GUI Workflow](wiki/GUI-Workflow.md)
+- [Graph Editing](wiki/Graph-Editing.md)
+- [Optimization Backends](wiki/Optimization-Backends.md)
+- [Troubleshooting](wiki/Troubleshooting.md)
+- [FAQ](wiki/FAQ.md)
+
+If you later enable the GitHub Wiki feature in repository settings, these pages can be copied directly with minimal renaming.
+
+如果你之后在仓库设置中开启 GitHub Wiki，这批页面几乎可以直接迁移过去使用。
 
 ## Developer Utilities | 开发辅助
 
