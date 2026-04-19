@@ -359,14 +359,6 @@ class TrajectoryCanvas(FigureCanvas):
             and len(self._selected_target_positions_xy) > 0
         ):
             selected = self._selected_target_positions_xy
-            if len(selected) > 1:
-                self._axes.plot(
-                    selected[:, 0],
-                    selected[:, 1],
-                    color="#f6d32d",
-                    linewidth=2.2,
-                    alpha=0.95,
-                )
             self._axes.scatter(
                 selected[:, 0],
                 selected[:, 1],
@@ -751,6 +743,52 @@ class ManualLoopClosureWindow(QtWidgets.QMainWindow):
                 background: #bfdbfe;
                 border-color: #3b82f6;
             }
+            QToolBar {
+                background: #f8fafc;
+                border: 1px solid #d9e1ea;
+                border-radius: 10px;
+                spacing: 4px;
+                padding: 4px;
+            }
+            QToolBar QToolButton {
+                background: transparent;
+                border: 1px solid transparent;
+                border-radius: 8px;
+                padding: 5px;
+                min-width: 28px;
+                min-height: 28px;
+            }
+            QToolBar QToolButton:hover {
+                background: #eef4ff;
+                border-color: #bfdbfe;
+            }
+            QToolBar QToolButton:pressed, QToolBar QToolButton:checked {
+                background: #dbeafe;
+                border-color: #60a5fa;
+            }
+            QFrame#SegmentedControl {
+                background: #eef2f7;
+                border: 1px solid #d9e1ea;
+                border-radius: 10px;
+            }
+            QToolButton[segmentRole="segmented"] {
+                background: transparent;
+                border: 1px solid transparent;
+                border-radius: 8px;
+                padding: 5px 12px;
+                min-height: 28px;
+                font-weight: 600;
+                color: #475569;
+            }
+            QToolButton[segmentRole="segmented"]:hover {
+                background: #e2e8f0;
+                border-color: #cbd5e1;
+            }
+            QToolButton[segmentRole="segmented"]:checked {
+                background: #ffffff;
+                border-color: #93c5fd;
+                color: #1d4ed8;
+            }
             QHeaderView::section {
                 background: #edf3f9;
                 border: none;
@@ -827,6 +865,9 @@ class ManualLoopClosureWindow(QtWidgets.QMainWindow):
             return
 
         self.toolbar.setIconSize(QtCore.QSize(18, 18))
+        self.toolbar.setToolButtonStyle(QtCore.Qt.ToolButtonIconOnly)
+        self.toolbar.setMovable(False)
+        self.toolbar.setFloatable(False)
         removable_actions = {"Subplots", "Customize"}
         for action in list(self.toolbar.actions()):
             text = action.text().strip()
@@ -1039,12 +1080,14 @@ class ManualLoopClosureWindow(QtWidgets.QMainWindow):
         self.pick_nodes_button.setText("Pick Nodes")
         self.pick_nodes_button.setCheckable(True)
         self.pick_nodes_button.setChecked(True)
+        self.pick_nodes_button.setProperty("segmentRole", "segmented")
         self.pick_nodes_button.setToolTip("Exit pan/zoom mode and pick a source-target node pair.")
         self.pick_nodes_button.clicked.connect(lambda: self._set_pick_mode("nodes"))
 
         self.pick_edges_button = QtWidgets.QToolButton()
         self.pick_edges_button.setText("Pick Edges")
         self.pick_edges_button.setCheckable(True)
+        self.pick_edges_button.setProperty("segmentRole", "segmented")
         self.pick_edges_button.setToolTip("Exit pan/zoom mode and inspect an existing or manual edge.")
         self.pick_edges_button.clicked.connect(lambda: self._set_pick_mode("edges"))
 
@@ -1063,8 +1106,15 @@ class ManualLoopClosureWindow(QtWidgets.QMainWindow):
         fit_view_button.setToolTip("Reset the trajectory view to the full pose graph.")
         fit_view_button.clicked.connect(lambda: self._refresh_plot(preserve_view=False))
 
-        actions_row.addWidget(self.pick_nodes_button)
-        actions_row.addWidget(self.pick_edges_button)
+        segmented_control = QtWidgets.QFrame()
+        segmented_control.setObjectName("SegmentedControl")
+        segmented_layout = QtWidgets.QHBoxLayout(segmented_control)
+        segmented_layout.setContentsMargins(3, 3, 3, 3)
+        segmented_layout.setSpacing(4)
+        segmented_layout.addWidget(self.pick_nodes_button)
+        segmented_layout.addWidget(self.pick_edges_button)
+
+        actions_row.addWidget(segmented_control)
         actions_row.addWidget(clear_button)
         actions_row.addWidget(fit_view_button)
         actions_row.addStretch(1)
